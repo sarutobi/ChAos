@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.utils.translations import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -9,20 +9,30 @@ def logo_path(instance, filename):
     return u"logo/%s/%s" % (instance.slug, filename)
 
 
+CAUSE = (
+    (0, _("All")),
+    (1, _("Health and care")),
+    (2, _("elders")),
+)
+
+
 class Challenge(models.Model):
     '''
+    Challenge
+    =========
     Challenge is a group of tasks, that should be completed by participants.
     Each challenge have its own active period, activities durinig challenge
-    and allowed participatns. The last one can be individual users or user
-    groups, for more deatila about participants see participants.
+    and allowed list ofparticipatns. The last one can be individual user
+    or user group. For more deatils about participants see participants.
     '''
     # Challenge name
-    name = models.CharField(max_length=100, verbose_name=_('name'))
+    title = models.CharField(max_length=100, verbose_name=_('title'))
     # Short description
     summary = models.CharField(max_length=255, verbose_name=_('summary'))
     # Challenge description
     description = models.TextField(blank=True, verbose_name=_('description'))
 
+    cause = models.IntegerField(choices=CAUSE)
     slug = models.SlugField(verbose_name=_('slug'))
     # Challenge start
     start_at = models.DateTimeField(verbose_name=_('start at'))
@@ -41,7 +51,7 @@ class Challenge(models.Model):
                                 verbose_name=_('creator'))
 
     def __unicode__(self):
-        return self.name
+        return self.title
 
     def save(self, *args, **kwargs):
         try:
@@ -63,49 +73,43 @@ class Challenge(models.Model):
 
 class Activity(models.Model):
     '''
-    Simple task description. Each task must be connected to one Challenge.
+    Activity
+    ========
+    Each challenge contains one or more activities - a smallest part of user
+    action. Activity can be vary - reading books, push-ups, make food, creation
+    month report and so on.
+    When user completes the activity, he got a reward - predefined
+    number of 'points', that can be converted in some useful things.
+    For now completion must be one of predefined values:
+    * User confirm task
+    * User spent <num> work hours for this activity
+    * User sent <predefined> amount of money
+    * User spent <num> non-working hours for this activity
+    Every complete activity item from this list will be rewarded when one of
+    challenge moderators confirm user action.
     '''
-    TASK_STATUS = (
-        (0, 'Created'),
-        (1, 'In progress'),
-        (2, 'Pending'),
-        (3, 'Valid'),
-        (4, 'Invalid'),
-        (5, 'Error'),
+    REWARD_COST_TYPE = (
+        (1, _("Task completion")),
+        (2, _("Hours")),
+        (3, _("Donation")),
+        (4, _("Service"))
     )
+    # Challenge for activity
     challenge = models.ForeignKey(Challenge, verbose_name=_('challenge'))
+    # Activity name
     title = models.CharField(max_length=100, verbose_name=('title'))
+    # Activity description
     description = models.TextField(blank=True, verbose_name=_('description'))
-    points = models.PositiveIntegerField(verbose_name=_('points'))
+    # This reward will be transfered to user points deposit
+    reward = models.PositiveIntegerField(verbose_name=_('points'))
+    # Reward cost - user must spend this for getting a reward
+    reward_cost = models.PositiveIntegerField(blank=True, null=True)
+    # Hardly predefined reward cost type
+    reward_cost_type = models.IntegerField(choices=REWARD_COST_TYPE)
     #Only authorized users can create tasks
-    user = models.ForeignKey(User)
-    creation_time = models.DateTimeField(auto_now_add=True, editable=False)
-    valid_until = models.DateTimeField(blank=True, null=True)
-    status = models.PositiveIntegerField(choices=TASK_STATUS, default=0)
-    # Priority - value between 0 (low) and 100 (utmost) - hint for tracker
-    priority = models.PositiveIntegerField()
-    #Number of answers to complete task
-    quorum = models.PositiveIntegerField()
-    #Max numbers of task runs
-    max_runs = models.PositiveIntegerField(default=20)
-    current_runs = models.PositiveIntegerField(default=0, editable=False)
+    creator = models.ForeignKey(User, verbose_name=_('creator'))
+    created_at = models.DateTimeField(auto_now_add=True, editable=False,
+                                      verbose_name=_("created at"))
 
     def __unicode__(self):
-        return "#%s" % self.id
-
-    def is_completed(self):
-        return self.quorum <= self.current_runs
-
-
-class TaskRun(models.Model):
-    '''
-    When user solve a task, store answer and related information here.
-    '''
-    task = models.ForeignKey(Task)
-    application = models.ForeignKey(Application)
-    info = JSONField()
-    remote_ip = models.IPAddressField()
-    user = models.ForeignKey(User, blank=True, null=True)
-    creation_time = models.DateTimeField(auto_now_add=True, editable=False)
-    accepted = models.BooleanField(default=False)
-
+        return self.title

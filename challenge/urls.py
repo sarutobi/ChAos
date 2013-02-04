@@ -2,6 +2,9 @@
 
 from django.conf.urls import patterns, include, url
 
-urlpatterns = patterns("",
+from .views import ChallengeList
 
+urlpatterns = patterns(
+    "",
+    url(r'^challenge$', ChallengeList.as_view(), name="challenges_list")
 )

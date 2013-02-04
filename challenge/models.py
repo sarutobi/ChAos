@@ -67,8 +67,9 @@ class Challenge(models.Model):
         super(Challenge, self).delete(*args, **kwargs)
         storage.delete(path)
 
+    @models.permalink
     def get_absolute_url(self):
-        return ('/app/view/%s' % self.slug)
+        return ('challenge_list', [self.slug])
 
 
 class Activity(models.Model):

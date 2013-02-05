@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import unittest
+from datetime import datetime
 
 from .factories import ChallengeFactory
 
@@ -22,3 +23,19 @@ class ChallengeTest(unittest.TestCase):
     def test_get_absolute_url(self):
         self.assertEqual(self.challenge.get_absolute_url(),
                          '/challenge/%s' % self.challenge.slug)
+
+    def test_clean(self):
+        date1 = datetime.now()
+        date2 = datetime.now()
+        self.assertNotEqual(date1, date2)
+        challenge = ChallengeFactory.build()
+
+
+
+#class ActivityTest(unittest.TestCase):
+#
+#    def setUp(self):
+#        self.activity = ActivityFactory.build()
+#
+#    def tearDown(self):
+#        self.activity = None

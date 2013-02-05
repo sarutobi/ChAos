@@ -69,7 +69,7 @@ class Challenge(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('challenge_list', [self.slug])
+        return ('challenge_view', [self.slug, ])
 
 
 class Activity(models.Model):

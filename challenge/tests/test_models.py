@@ -21,4 +21,4 @@ class ChallengeTest(unittest.TestCase):
 
     def test_get_absolute_url(self):
         self.assertEqual(self.challenge.get_absolute_url(),
-                        'challenge')
+                         '/challenge/%s' % self.challenge.slug)

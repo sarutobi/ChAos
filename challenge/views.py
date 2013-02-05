@@ -14,7 +14,6 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.shortcuts import redirect
 
 from .models import Challenge, Activity
-from crowdtask.forms import ApplicationForm, TaskForm
 
 logger = logging.getLogger(__name__)
 
@@ -33,34 +32,16 @@ class ChallengeList(ListView):
         return Challenge.objects.all()
 
 
+class ChallengeView(DetailView):
+    model = Challenge
+    template = "challenge_detial.haml"
+    context_object_name = "challenge"
+
 #class CreateUser(CreateView):
 #    '''Register form'''
 #    form_class = UserCreationForm
 #    template_name = "register_form.html"
 #    success_url = "/"
-
-
-#def create_app(request):
-#    '''create app form'''
-#    if request.method == 'GET':
-#        return TemplateResponse(request, 'application_form.html',
-#            {'form': ApplicationForm(), })
-#    elif request.method == 'POST':
-#        form = ApplicationForm(request.POST)
-#        if form.is_valid():
-#            app = form.save(commit=False)
-#            app.user_id = request.user.id
-#            logger.debug("App data: %s" % app)
-#            app.save()
-#            return HttpResponseRedirect('/')
-#        return TemplateResponse(request, 'application_form.html',
-#            {'form': form,})
-
-#def create_task(request):
-#    ''' create task form'''
-#    if request.method == 'GET':
-#        return TemplateResponse(request, 'application_form.html',
-#            {'form': TaskForm(),})
 
 
 #class CreateTask(CreateView):

@@ -3,7 +3,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.core.exceptions import ValidationError
 
 def logo_path(instance, filename):
     return u"logo/%s/%s" % (instance.slug, filename)
@@ -70,6 +70,12 @@ class Challenge(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('challenge_view', [self.slug, ])
+
+    def clean(self):
+        if self.start_at >= self.end_at:
+            raise ValidationError(
+                _("'Start at' (%s) should be before 'end at'(%s)"
+                  % (self.start_at, self.end_at)))
 
 
 class Activity(models.Model):

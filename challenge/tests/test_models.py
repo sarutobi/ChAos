@@ -3,6 +3,8 @@
 import unittest
 from datetime import datetime
 
+from django.core.exceptions import ValidationError
+
 from .factories import ChallengeFactory
 
 
@@ -21,15 +23,41 @@ class ChallengeTest(unittest.TestCase):
         self.assertEqual("%s" % self.challenge, self.challenge.title)
 
     def test_get_absolute_url(self):
-        self.assertEqual(self.challenge.get_absolute_url(),
-                         '/challenge/%s' % self.challenge.slug)
+        self.assertEqual(
+            self.challenge.get_absolute_url(),
+            '/challenge/%s' % self.challenge.slug)
 
-    def test_clean(self):
-        date1 = datetime.now()
-        date2 = datetime.now()
-        self.assertNotEqual(date1, date2)
-        challenge = ChallengeFactory.build()
 
+class ChallengePeriodTest(unittest.TestCase):
+
+    def setUp(self):
+        self.low_date = datetime(2012, 1, 2, 8, 0, 0)
+        self.hi_date = datetime(2012, 2, 1, 8, 0, 0)
+
+    def tearDown(self):
+        self.low_date = None
+        self.hi_date = None
+
+    def test_dates(self):
+        self.assertNotEqual(self.low_date, self.hi_date)
+
+    def test_wrong_period(self):
+        challenge = ChallengeFactory.build(
+            start_at=self.hi_date,
+            end_at=self.low_date
+        )
+        with self.assertRaises(ValidationError):
+            challenge.full_clean()
+        challenge = None
+
+    def test_zero_period(self):
+        challenge = ChallengeFactory.build(
+            start_at=self.hi_date,
+            end_at=self.hi_date
+        )
+        with self.assertRaises(ValidationError):
+            challenge.full_clean()
+        challenge = None
 
 
 #class ActivityTest(unittest.TestCase):

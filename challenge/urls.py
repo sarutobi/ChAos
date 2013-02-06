@@ -2,11 +2,13 @@
 
 from django.conf.urls import patterns, include, url
 
-from .views import ChallengeList, ChallengeView
+from .views import ChallengeList, ChallengeView, ActivityView
 
 urlpatterns = patterns(
     "",
     url(r'^$', ChallengeList.as_view(), name="challenges_list"),
-    url(r'^(?P<slug>.+$)', ChallengeView.as_view(),
+    url(r'^(?P<slug>[\w_-]+$)', ChallengeView.as_view(),
         name="challenge_view"),
+    url(r'^activity/(?P<id>\d+$)', ActivityView.as_view(),
+        name="activity_view"),
 )

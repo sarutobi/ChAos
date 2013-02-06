@@ -3,7 +3,8 @@
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
+
 
 def logo_path(instance, filename):
     return u"logo/%s/%s" % (instance.slug, filename)
@@ -58,7 +59,7 @@ class Challenge(models.Model):
             test = Challenge.objects.get(id=self.id)
             if test.logo.path != self.logo.path:
                 test.logo.delete(save=False)
-        except ValueError:
+        except (ObjectDoesNotExist, ValueError):
             pass
         super(Challenge, self).save(*args, **kwargs)
 

@@ -5,7 +5,7 @@ from datetime import datetime
 
 from django.core.exceptions import ValidationError
 
-from .factories import ChallengeFactory
+from .factories import ChallengeFactory, ActivityFactory
 
 
 class ChallengeTest(unittest.TestCase):
@@ -27,6 +27,19 @@ class ChallengeTest(unittest.TestCase):
             self.challenge.get_absolute_url(),
             '/challenge/%s' % self.challenge.slug)
 
+    def test_pk(self):
+        self.assertIsNone(self.challenge.pk)
+
+
+class ChallengeSaveTest(unittest.TestCase):
+    def setUp(self):
+        self.challenge = ChallengeFactory()
+
+    def tearDown(self):
+        self.challenge.delete()
+
+    def test_store(self):
+        self.assertIsNotNone(self.challenge)
 
 class ChallengePeriodTest(unittest.TestCase):
 
@@ -60,10 +73,26 @@ class ChallengePeriodTest(unittest.TestCase):
         challenge = None
 
 
-#class ActivityTest(unittest.TestCase):
-#
-#    def setUp(self):
-#        self.activity = ActivityFactory.build()
-#
-#    def tearDown(self):
-#        self.activity = None
+class ActivityTest(unittest.TestCase):
+
+    def setUp(self):
+        self.challenge = ChallengeFactory()
+        self.activity = ActivityFactory.build(challenge=self.challenge)
+
+    def tearDown(self):
+        self.challenge.delete()
+        self.activity = None
+
+    def test_creation(self):
+        self.assertIsNotNone(self.activity)
+
+    def test_unicode(self):
+        self.assertEqual(self.activity.title, "%s" % self.activity)
+
+    def test_get_absolute_url(self):
+        self.activity.save()
+        self.assertEqual(
+            self.activity.get_absolute_url(),
+            '/activity/%s' % self.challenge.pk)
+        self.activity.delete()
+

@@ -120,3 +120,7 @@ class Activity(models.Model):
 
     def __unicode__(self):
         return self.title
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('activity_view', [self.pk, ])

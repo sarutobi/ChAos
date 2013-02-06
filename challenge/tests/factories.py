@@ -2,6 +2,7 @@
 
 import factory
 import random
+from datetime import datetime
 
 from challenge.models import Challenge, Activity
 
@@ -14,3 +15,5 @@ class ChallengeFactory(factory.Factory):
     description = factory.LazyAttribute(lambda a: a.summary * 6)
     cause = random.randint(0, 4)
     slug = factory.LazyAttribute(lambda a: "%s_slug" % a.title.lower())
+    start_at = datetime(2012, 1, 1, 8, 0, 0)
+    end_at = datetime(2012, 2, 1, 8, 0, 0)

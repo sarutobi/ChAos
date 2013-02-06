@@ -37,6 +37,12 @@ class ChallengeView(DetailView):
     template = "challenge_detial.haml"
     context_object_name = "challenge"
 
+
+class ActivityView(DetailView):
+    model = Activity
+    template = "activity_detail.html"
+    context_object_name = "activity"
+
 #class CreateUser(CreateView):
 #    '''Register form'''
 #    form_class = UserCreationForm

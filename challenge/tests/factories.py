@@ -4,7 +4,19 @@ import factory
 import random
 from datetime import datetime
 
+from django.contrib.auth.models import User
+
 from challenge.models import Challenge, Activity
+
+
+class UserFactory(factory.Factory):
+    FACTORY_FOR = User
+
+    first_name = 'Dummy'
+    last_name = 'User'
+    email = factory.LazyAttribute(
+        lambda a: "%s_%s@example.com" % (a.first_name, a.last_name).lower())
+    username = factory.Sequence(lambda n: 'username_%s' % n)
 
 
 class ChallengeFactory(factory.Factory):

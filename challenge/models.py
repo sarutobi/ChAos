@@ -74,6 +74,10 @@ class Challenge(models.Model):
         return ('challenge_view', [self.slug, ])
 
     def clean(self):
+        if self.start_at is None:
+            raise ValidationError(_("You must provide 'start at' parameter!"))
+        if self.end_at is None:
+            raise ValidationError(_("You must provide 'end at' parameter!"))
         if self.start_at >= self.end_at:
             raise ValidationError(
                 _("'Start at' (%s) should be before 'end at'(%s)"

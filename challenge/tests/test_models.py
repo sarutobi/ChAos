@@ -101,4 +101,3 @@ class ActivityTest(unittest.TestCase):
             self.activity.get_absolute_url(),
             '/challenge/activity/%s' % self.activity.pk)
         self.activity.delete()
-

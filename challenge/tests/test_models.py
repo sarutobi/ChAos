@@ -79,11 +79,13 @@ class ChallengePeriodTest(unittest.TestCase):
 class ActivityTest(unittest.TestCase):
 
     def setUp(self):
+        self.user = UserFactory()
         self.challenge = ChallengeFactory()
         self.activity = ActivityFactory.build(challenge=self.challenge)
 
     def tearDown(self):
         self.challenge.delete()
+        self.user.delete()
         self.activity = None
 
     def test_creation(self):
@@ -93,9 +95,10 @@ class ActivityTest(unittest.TestCase):
         self.assertEqual(self.activity.title, "%s" % self.activity)
 
     def test_get_absolute_url(self):
+        self.activity.creator = self.user
         self.activity.save()
         self.assertEqual(
             self.activity.get_absolute_url(),
-            '/activity/%s' % self.challenge.pk)
+            '/challenge/activity/%s' % self.activity.pk)
         self.activity.delete()
 

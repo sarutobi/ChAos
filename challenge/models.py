@@ -64,9 +64,10 @@ class Challenge(models.Model):
         super(Challenge, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        storage, path = self.logo.storage, self.logo.path
-        super(Challenge, self).delete(*args, **kwargs)
-        storage.delete(path)
+        if self.logo:
+            storage, path = self.logo.storage, self.logo.path
+            super(Challenge, self).delete(*args, **kwargs)
+            storage.delete(path)
 
     @models.permalink
     def get_absolute_url(self):

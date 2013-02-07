@@ -5,7 +5,7 @@ from datetime import datetime
 
 from django.core.exceptions import ValidationError
 
-from .factories import ChallengeFactory, ActivityFactory
+from .factories import ChallengeFactory, ActivityFactory, UserFactory
 
 
 class ChallengeTest(unittest.TestCase):
@@ -33,13 +33,16 @@ class ChallengeTest(unittest.TestCase):
 
 class ChallengeSaveTest(unittest.TestCase):
     def setUp(self):
-        self.challenge = ChallengeFactory()
+        self.user = UserFactory()
+        self.challenge = ChallengeFactory(creator=self.user)
 
     def tearDown(self):
+        self.user.delete()
         self.challenge.delete()
 
     def test_store(self):
         self.assertIsNotNone(self.challenge)
+
 
 class ChallengePeriodTest(unittest.TestCase):
 

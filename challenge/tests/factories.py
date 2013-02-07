@@ -26,7 +26,7 @@ class ChallengeFactory(factory.Factory):
     title = factory.Sequence(lambda n: "Challenge_%s" % n)
     summary = factory.Sequence(lambda n: "Description for challenge %s" % n)
     description = factory.LazyAttribute(lambda a: a.summary * 6)
-    cause = random.randint(0, 4)
+    cause = random.randint(0, 2)
     slug = factory.LazyAttribute(lambda a: "%s_slug" % a.title.lower())
     start_at = datetime(2012, 1, 1, 8, 0, 0)
     end_at = datetime(2012, 2, 1, 8, 0, 0)

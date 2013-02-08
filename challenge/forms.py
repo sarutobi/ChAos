@@ -2,7 +2,7 @@
 
 from django import forms
 
-from .models import Challenge
+from .models import Challenge, Activity
 
 
 class ChallengeForm(forms.ModelForm):
@@ -11,3 +11,7 @@ class ChallengeForm(forms.ModelForm):
         model = Challenge
 
 
+class ActivityForm(forms.ModelForm):
+    '''Form for handle activities'''
+    class Meta:
+        model = Activity

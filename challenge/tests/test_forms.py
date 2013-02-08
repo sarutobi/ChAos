@@ -2,8 +2,8 @@
 
 import unittest
 
-from challenge.forms import ChallengeForm
-from .factories import ChallengeFactory, UserFactory
+from challenge.forms import ChallengeForm, ActivityForm
+from .factories import ChallengeFactory, ActivityFactory, UserFactory
 
 
 class TestChallengeForm(unittest.TestCase):
@@ -70,3 +70,23 @@ class TestChallengeFormRequiredFields(unittest.TestCase):
         form = ChallengeForm(self.challenge)
         self.assertTrue(form.is_bound)
         self.assertFalse(form.is_valid())
+
+
+class ActivityFormTest(unittest.TestCase):
+    def setUp(self):
+        self.challenge = ChallengeFactory()
+        self.user = UserFactory()
+        self.activity = ActivityFactory.attributes()
+        self.activity['challenge'] = self.challenge.pk
+        self.activity['creator'] = self.user.pk
+
+    def tearDown(self):
+        self.activity = None
+        self.user.delete()
+        self.challenge.delete()
+
+    def test_form(self):
+        form = ActivityForm(self.activity)
+        self.assertIsNotNone(form)
+        self.assertTrue(form.is_bound)
+        self.assertTrue(form.is_valid())

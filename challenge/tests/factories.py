@@ -41,3 +41,5 @@ class ActivityFactory(factory.Factory):
     reward = random.randint(3, 10)
     reward_cost = random.randint(2, 20)
     reward_cost_type = random.randint(1, 4)
+    challenge = factory.SubFactory(ChallengeFactory)
+    creator = factory.SubFactory(UserFactory)

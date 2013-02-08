@@ -32,6 +32,14 @@ class TestChallengeForm(unittest.TestCase):
         self.assertIsNotNone(ch.pk)
         ch.delete()
 
+
+class TestChallengeFormRequiredFields(unittest.TestCase):
+    def setUp(self):
+        self.challenge = ChallengeFactory.attributes()
+
+    def tearDown(self):
+        self.challenge = None
+
     def test_lost_title(self):
         self.challenge['title'] = ''
         self.lost_field()

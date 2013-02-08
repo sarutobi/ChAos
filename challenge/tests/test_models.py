@@ -5,6 +5,7 @@ from datetime import datetime
 
 from django.core.exceptions import ValidationError
 
+from challenge.models import Activity, validate_cost
 from .factories import ChallengeFactory, ActivityFactory, UserFactory
 
 
@@ -101,3 +102,27 @@ class ActivityTest(unittest.TestCase):
             self.activity.get_absolute_url(),
             '/challenge/activity/%s' % self.activity.pk)
         self.activity.delete()
+
+
+class ActivityCostTest(unittest.TestCase):
+
+    def test_cost_task_complete(self):
+        self.assertTrue(validate_cost(Activity.TASK_COMPLETION))
+        with self.assertRaises(ValidationError):
+            validate_cost(Activity.TASK_COMPLETION, 10)
+
+    def test_cost_task_hours(self):
+        self.assertTrue(validate_cost(Activity.TASK_HOURS, 2))
+        with self.assertRaises(ValidationError):
+            validate_cost(Activity.TASK_HOURS)
+
+    def test_cost_task_donation(self):
+        self.assertTrue(validate_cost(Activity.TASK_DONATION, 2))
+        with self.assertRaises(ValidationError):
+            validate_cost(Activity.TASK_DONATION)
+
+    def test_cost_task_servie(self):
+        self.assertTrue(validate_cost(Activity.TASK_SERVICE, 2))
+        with self.assertRaises(ValidationError):
+            validate_cost(Activity.TASK_SERVICE)
+

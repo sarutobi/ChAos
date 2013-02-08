@@ -101,11 +101,17 @@ class Activity(models.Model):
     Every complete activity item from this list will be rewarded when one of
     challenge moderators confirm user action.
     '''
+    # Activities cost type constants
+    TASK_COMPLETION = 1
+    TASK_HOURS = 2
+    TASK_DONATION = 3
+    TASK_SERVICE = 4
+    # Cost type choices
     REWARD_COST_TYPE = (
-        (1, _("Task completion")),
-        (2, _("Hours")),
-        (3, _("Donation")),
-        (4, _("Service"))
+        (TASK_COMPLETION, _("Task completion")),
+        (TASK_HOURS, _("Hours")),
+        (TASK_DONATION, _("Donation")),
+        (TASK_SERVICE, _("Service"))
     )
     # Challenge for activity
     challenge = models.ForeignKey(Challenge, verbose_name=_('challenge'))
@@ -119,7 +125,7 @@ class Activity(models.Model):
     reward_cost = models.PositiveIntegerField(blank=True, null=True)
     # Hardly predefined reward cost type
     reward_cost_type = models.IntegerField(choices=REWARD_COST_TYPE)
-    #Only authorized users can create tasks
+    # Next two fields will be set automatically
     creator = models.ForeignKey(User, verbose_name=_('creator'))
     created_at = models.DateTimeField(auto_now_add=True, editable=False,
                                       verbose_name=_("created at"))
@@ -130,3 +136,16 @@ class Activity(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('activity_view', [self.pk, ])
+
+
+def validate_cost(cost_type=None, cost_reward=None):
+    if cost_type == Activity.TASK_COMPLETION and cost_reward is not None:
+        raise ValidationError(_("Task completion can't have parameter!"))
+    if cost_type in (
+        Activity.TASK_HOURS,
+        Activity.TASK_DONATION,
+        Activity.TASK_SERVICE) and cost_reward is None:
+            raise ValidationError(
+                _("You must provide numeric reward parameter!")
+            )
+    return True

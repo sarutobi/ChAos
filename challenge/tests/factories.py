@@ -15,8 +15,7 @@ class UserFactory(factory.Factory):
     first_name = 'Dummy'
     last_name = 'User'
     email = factory.LazyAttribute(
-        lambda a: "{0}_{1}@example.com".format(
-            a.first_name, a.last_name).lower())
+        lambda a: "{0}@example.com".format(a.username).lower())
     username = factory.Sequence(lambda n: 'username_%s' % n)
 
 

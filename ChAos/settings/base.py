@@ -97,6 +97,12 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south',
     'challenge',
+    'profile',
+)
+
+AUTHENTICATION_BACKENDS = (
+    'profile.backends.EmailAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 # A sample logging configuration. The only tangible logging

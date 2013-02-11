@@ -31,6 +31,7 @@ class TestChallengeForm(unittest.TestCase):
         ch = form.save()
         self.assertIsNotNone(ch.pk)
         ch.delete()
+        user.delete()
 
 
 class TestChallengeFormRequiredFields(unittest.TestCase):
@@ -75,7 +76,7 @@ class TestChallengeFormRequiredFields(unittest.TestCase):
 class ActivityFormTest(unittest.TestCase):
     def setUp(self):
         self.challenge = ChallengeFactory()
-        self.user = UserFactory()
+        self.user = self.challenge.creator
         self.activity = ActivityFactory.attributes()
         self.activity['challenge'] = self.challenge.pk
         self.activity['creator'] = self.user.pk
@@ -104,6 +105,7 @@ class ActivityFormRequiredFields(unittest.TestCase):
     def tearDown(self):
         self.activity = None
         self.user.delete()
+        self.challenge.creator.delete()
         self.challenge.delete()
 
     def test_correct(self):

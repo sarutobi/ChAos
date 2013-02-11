@@ -80,8 +80,8 @@ class ChallengePeriodTest(unittest.TestCase):
 class ActivityTest(unittest.TestCase):
 
     def setUp(self):
-        self.user = UserFactory()
         self.challenge = ChallengeFactory()
+        self.user = self.challenge.creator
         self.activity = ActivityFactory.build(challenge=self.challenge)
 
     def tearDown(self):

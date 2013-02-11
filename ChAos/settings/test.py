@@ -13,3 +13,4 @@ DATABASES = {
 
 TEST_RUNNER = 'discover_runner.DiscoverRunner'
 TEST_DISCOVER_ROOT = SITE_ROOT
+SOUTH_TESTS_MIGRATE = False

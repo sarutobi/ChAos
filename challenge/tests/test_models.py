@@ -121,7 +121,7 @@ class ActivityCostTest(unittest.TestCase):
         with self.assertRaises(ValidationError):
             validate_cost(Activity.TASK_DONATION)
 
-    def test_cost_task_servie(self):
+    def test_cost_task_service(self):
         self.assertTrue(validate_cost(Activity.TASK_SERVICE, 2))
         with self.assertRaises(ValidationError):
             validate_cost(Activity.TASK_SERVICE)

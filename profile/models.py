@@ -5,6 +5,7 @@ import string
 import hashlib
 import base64
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -53,3 +54,12 @@ class Profile(models.Model):
 
     user = models.OneToOneField(User)
 #    avatar = models.ImageField()
+
+
+def activate_user(user, code):
+    encoder = UserAuthCode(settings.SECRET_KEY)
+    if encoder.is_valid(user, code):
+        user.is_active = True
+        user.save()
+        return True
+    return False

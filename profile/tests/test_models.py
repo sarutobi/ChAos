@@ -2,17 +2,18 @@
 
 import unittest
 
+from django.conf import settings
 from django.utils import timezone
 
 from challenge.tests.factories import UserFactory
-from profile.models import UserAuthCode
+from profile.models import UserAuthCode, activate_user
 
 
 class UserAuthCodeTest(unittest.TestCase):
 
     def setUp(self):
         self.encoder = UserAuthCode('secret')
-        self.user = UserFactory()
+        self.user = UserFactory(is_active=False)
 
     def tearDown(self):
         self.encoder = None
@@ -43,3 +44,22 @@ class UserAuthCodeTest(unittest.TestCase):
         self.user.last_login = timezone.now()
         self.user.save()
         self.assertFalse(self.encoder.is_valid(self.user, code))
+
+
+class TestUserActivation(unittest.TestCase):
+    def setUp(self):
+        encoder = UserAuthCode(settings.SECRET_KEY)
+        self.user = UserFactory(is_active=False)
+        self.code = encoder.auth_code(self.user)
+
+    def tearDown(self):
+        self.user.delete()
+        self.code = None
+
+    def test_user_activation(self):
+        self.assertTrue(activate_user(self.user, self.code))
+        self.assertTrue(self.user.is_active)
+
+    def test_wrong_code(self):
+        self.assertFalse(activate_user(self.user, 'self.code'))
+        self.assertFalse(self.user.is_active)

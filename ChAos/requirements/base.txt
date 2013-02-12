@@ -1,3 +1,4 @@
 Django==1.4.3
 psycopg2==2.4.5
 South==0.7.6
+django-avatar==1.0.5

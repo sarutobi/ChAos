@@ -1,9 +1,12 @@
 # coding: utf-8
 
 from django import forms
+from django.db.models.signals import post_save
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+
+from profile.models import Profile
 
 
 class SignUpForm(UserCreationForm):
@@ -32,3 +35,10 @@ class SignUpForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+post_save.connect(create_user_profile, sender=User)

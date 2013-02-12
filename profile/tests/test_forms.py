@@ -28,4 +28,5 @@ class TestSignUpForm(unittest.TestCase):
         user = form.save()
         self.assertIsNotNone(user)
         self.assertIsNotNone(user.pk)
+        self.assertFalse(user.is_active)
         user.delete()

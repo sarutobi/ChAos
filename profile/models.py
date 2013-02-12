@@ -6,6 +6,7 @@ import hashlib
 import base64
 
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -52,8 +53,21 @@ class UserAuthCode(object):
 class Profile(models.Model):
     ''' User profile'''
 
+    SEX_UNKNOWN = 0
+    SEX_MALE = 1
+    SEX_FEMALE = 2
+    SEX_CHOICES = (
+        (SEX_UNKNOWN, _("unknown")),
+        (SEX_MALE, _("male")),
+        (SEX_FEMALE, _('female'))
+    )
     user = models.OneToOneField(User)
-#    avatar = models.ImageField()
+    sex = models.SmallIntegerField(
+        blank=True, null=True,
+        choices=SEX_CHOICES,
+        verbose_name=_('sex'))
+    date_of_birth = models.DateField(
+        blank=True, null=True, verbose_name=_('date of birth'))
 
 
 def activate_user(user, code):

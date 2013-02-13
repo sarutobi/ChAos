@@ -15,4 +15,5 @@ JENKINS_TASKS = ('django_jenkins.tasks.run_pylint',
 
 PROJECT_APPS = (
     'challenge',
+    'profile',
 )

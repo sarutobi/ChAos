@@ -4,6 +4,9 @@ import unittest
 
 from django.test.client import Client
 
+from challenge.models import Challenge
+from challenge.tests.factories import ChallengeFactory
+
 
 class TestChallengeList(unittest.TestCase):
     def setUp(self):
@@ -26,3 +29,17 @@ class TestChallengeList(unittest.TestCase):
 
     def test_challenge_context(self):
         self.assertIsNotNone(self.resp.context['challenges'])
+
+
+class TestChallengeFilter(unittest.TestCase):
+    def setUp(self):
+        for x in xrange(100):
+            ChallengeFactory()
+        c = Client()
+        self.resp = c.get('/challenge/')
+
+    def tearDown(self):
+        Challenge.objects.all().delete()
+
+    def test_challenges_count(self):
+        self.assertEqual(100, len(self.resp.context['challenges']))

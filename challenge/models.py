@@ -139,12 +139,13 @@ class Activity(models.Model):
 
 
 def validate_cost(cost_type=None, cost_reward=None):
+    ''' Activity reward cost validator'''
     if cost_type == Activity.TASK_COMPLETION and cost_reward is not None:
         raise ValidationError(_("Task completion can't have parameter!"))
-    if cost_type in (
+    if cost_reward is None and cost_type in (
         Activity.TASK_HOURS,
         Activity.TASK_DONATION,
-        Activity.TASK_SERVICE) and cost_reward is None:
+            Activity.TASK_SERVICE):
             raise ValidationError(
                 _("You must provide numeric reward parameter!")
             )

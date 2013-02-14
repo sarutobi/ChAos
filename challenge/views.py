@@ -8,6 +8,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 
+from ChAos.braces.views import LoginRequiredMixin
+
 from .models import Challenge, Activity
 from .forms import ChallengeForm
 
@@ -34,7 +36,7 @@ class ChallengeView(DetailView):
     context_object_name = "challenge"
 
 
-class ChallengeCreation(CreateView):
+class ChallengeCreation(LoginRequiredMixin, CreateView):
     model = Challenge
     form_class = ChallengeForm
     template_name = 'challenge_form.html'

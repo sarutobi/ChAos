@@ -28,7 +28,7 @@ class ChallengeList(ListView):
 
 class ChallengeView(DetailView):
     model = Challenge
-    template = "challenge_detial.haml"
+    template_name = "challenge_detail.html"
     context_object_name = "challenge"
 
 

@@ -4,9 +4,13 @@ from django.conf.urls import patterns, include, url
 # from django.contrib import admin
 # admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     # Examples:
     # url(r'^$', 'ChAos.views.home', name='home'),
     # url(r'^ChAos/', include('ChAos.foo.urls')),
+    url('^accounts/login/$',
+        'django.contrib.auth.views.login',
+        {'template_name': 'login_form.html', }),
     url('^challenge/', include('challenge.urls'))
 )

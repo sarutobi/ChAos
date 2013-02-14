@@ -5,9 +5,11 @@ import logging
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 
 from .models import Challenge, Activity
+from .forms import ChallengeForm
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +32,16 @@ class ChallengeView(DetailView):
     model = Challenge
     template_name = "challenge_detail.html"
     context_object_name = "challenge"
+
+
+class ChallengeCreation(CreateView):
+    model = Challenge
+    form_class = ChallengeForm
+    template_name = 'challenge_form.html'
+
+
+class ChallengeEdit(UpdateView):
+    pass
 
 
 class ActivityView(DetailView):

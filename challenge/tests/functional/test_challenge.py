@@ -2,6 +2,8 @@
 
 from django_webtest import WebTest
 
+from profile.tests.factories import UserFactory
+
 from challenge.models import Challenge
 from challenge.tests.factories import ChallengeFactory
 
@@ -45,7 +47,7 @@ class TestChallengeDetails(WebTest):
 
     def setUp(self):
         self.challenge = ChallengeFactory()
-        self.resp = self.app.get('/challenge/%s' % self.challenge.slug)
+        self.resp = self.app.get('/challenge/view/%s' % self.challenge.slug)
 
     def tearDown(self):
         self.challenge.delete()
@@ -55,3 +57,24 @@ class TestChallengeDetails(WebTest):
     def test_response(self):
         self.assertEqual(200, self.resp.status_code)
 
+
+class TestCreateChallenge(WebTest):
+    def setUp(self):
+        self.user = UserFactory()
+
+    def tearDown(self):
+        self.user.delete()
+
+    def test_without_logo(self):
+        before = Challenge.objects.count()
+        form = self.app.get('/challenge/create', user=self.user.email).form
+        form['title'] = 'Test challenge'
+        form['summary'] = 'This is example challenge'
+        form['description'] = 'Example challenge that must be deleted'
+        form['cause'] = 0
+        form['slug'] = 'test_challenge'
+        form['start_at'] = '1/9/2012'
+        form['end_at'] = '31/5/2013'
+        resp = form.submit()
+        self.assertEqual(200, resp.status_code)
+        self.assertEqual(Challenge.objects.count(), before + 1)

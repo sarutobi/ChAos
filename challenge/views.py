@@ -41,6 +41,10 @@ class ChallengeCreation(LoginRequiredMixin, CreateView):
     form_class = ChallengeForm
     template_name = 'challenge_form.html'
 
+    def form_valid(self, form):
+        form.instance.creator = self.request.user
+        return super(ChallengeCreation, self).form_valid(form)
+
 
 class ChallengeEdit(UpdateView):
     pass

@@ -83,6 +83,5 @@ class TestCreateChallenge(WebTest):
         form['start_at'] = '1.9.2012'
         form['end_at'] = '31.5.2013'
         resp = form.submit(user=self.user.email)
-        self.assertEqual(200, resp.status_code)
-        resp.showbrowser()
+        self.assertEqual(302, resp.status_code)
         self.assertEqual(Challenge.objects.count(), before + 1)

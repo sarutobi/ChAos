@@ -59,6 +59,10 @@ class TestChallengeDetails(WebTest):
 
 
 class TestCreateChallenge(WebTest):
+    extra_environ = {
+        'HTTP_ACCEPT_LANGUAGE': 'ru',
+    }
+
     def setUp(self):
         self.user = UserFactory()
 
@@ -74,7 +78,8 @@ class TestCreateChallenge(WebTest):
         form['cause'] = 0
         form['slug'] = 'test_challenge'
         form['start_at'] = '1/9/2012'
-        form['end_at'] = '31/5/2013'
-        resp = form.submit()
+        form['end_at'] = '5/31/2013'
+        resp = form.submit(user=self.user.email)
         self.assertEqual(200, resp.status_code)
+        resp.showbrowser()
         self.assertEqual(Challenge.objects.count(), before + 1)

@@ -1,5 +1,6 @@
 # coding: utf-8
 
+from django.utils.translation import activate, deactivate
 from django_webtest import WebTest
 
 from profile.tests.factories import UserFactory
@@ -65,9 +66,11 @@ class TestCreateChallenge(WebTest):
 
     def setUp(self):
         self.user = UserFactory()
+        activate('ru')
 
     def tearDown(self):
         self.user.delete()
+        deactivate()
 
     def test_without_logo(self):
         before = Challenge.objects.count()
@@ -77,8 +80,8 @@ class TestCreateChallenge(WebTest):
         form['description'] = 'Example challenge that must be deleted'
         form['cause'] = 0
         form['slug'] = 'test_challenge'
-        form['start_at'] = '1/9/2012'
-        form['end_at'] = '5/31/2013'
+        form['start_at'] = '1.9.2012'
+        form['end_at'] = '31.5.2013'
         resp = form.submit(user=self.user.email)
         self.assertEqual(200, resp.status_code)
         resp.showbrowser()

@@ -76,6 +76,22 @@ class ChallengePeriodTest(unittest.TestCase):
             challenge.full_clean()
         challenge = None
 
+    def test_lost_start(self):
+        challenge = ChallengeFactory.build(
+            start_at=None,
+            end_at=self.hi_date
+        )
+        with self.assertRaises(ValidationError):
+            challenge.full_clean()
+
+    def test_lost_finish(self):
+        challenge = ChallengeFactory.build(
+            start_at=self.low_date,
+            end_at=None
+        )
+        with self.assertRaises(ValidationError):
+            challenge.full_clean()
+
 
 class ActivityTest(unittest.TestCase):
 

@@ -83,6 +83,13 @@ class Challenge(models.Model):
                 _("'Start at' (%s) should be before 'end at'(%s)"
                   % (self.start_at, self.end_at)))
 
+    def add(self, activity):
+        '''
+        Append activity to  current challenge
+        '''
+        activity.challenge = self
+        activity.save()
+
 
 class Activity(models.Model):
     '''

@@ -93,6 +93,20 @@ class ChallengePeriodTest(unittest.TestCase):
             challenge.full_clean()
 
 
+class ChallengeActivityTest(unittest.TestCase):
+    def setUp(self):
+        self.challenge = ChallengeFactory()
+
+    def tearDown(self):
+        self.challenge.delete(self)
+
+    def test_add_activity(self):
+        a = ActivityFactory.create()
+        self.challenge.add(a)
+        self.assertIsNotNone(a.id)
+        a.delete()
+
+
 class ActivityTest(unittest.TestCase):
 
     def setUp(self):

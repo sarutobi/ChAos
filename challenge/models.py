@@ -157,3 +157,26 @@ def validate_cost(cost_type=None, cost_reward=None):
                 _("You must provide numeric reward parameter!")
             )
     return True
+
+
+class UserActivity(models.Model):
+    '''
+    User Activity
+    =============
+    This class contains information about activities, completed by user.
+    Most of this data will be filled automatically.
+    '''
+    # Link to user
+    user = models.ForeignKey(User, related_name='performer')
+    # Link to activity
+    activity = models.ForeignKey(Activity)
+    # Reward in points
+    reward = models.PositiveIntegerField(editable=False)
+    # Date of completion
+    completion_date = models.DateTimeField(auto_now=True, editable=False)
+    # Confirmator
+    completion_confirmator = models.ForeignKey(
+        User,
+        editable=False,
+        related_name='confirmator')
+

@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from challenge.models import Challenge, Activity
 
 
-class UserFactory(factory.Factory):
+class UserFactory(factory.DjangoModelFactory):
     FACTORY_FOR = User
 
     first_name = 'Dummy'
@@ -19,7 +19,7 @@ class UserFactory(factory.Factory):
     username = factory.Sequence(lambda n: 'username_%s' % n)
 
 
-class ChallengeFactory(factory.Factory):
+class ChallengeFactory(factory.DjangoModelFactory):
     FACTORY_FOR = Challenge
 
     title = factory.Sequence(lambda n: "Challenge_%s" % n)
@@ -32,7 +32,7 @@ class ChallengeFactory(factory.Factory):
     creator = factory.SubFactory(UserFactory)
 
 
-class ActivityFactory(factory.Factory):
+class ActivityFactory(factory.DjangoModelFactory):
     FACTORY_FOR = Activity
 
     title = factory.Sequence(lambda n: "Activity %s" % n)

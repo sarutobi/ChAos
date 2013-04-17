@@ -5,7 +5,7 @@ from datetime import datetime
 
 from django.core.exceptions import ValidationError
 
-from challenge.models import Activity, validate_cost
+from challenge.models import Activity, validate_cost, logo_path
 from .factories import ChallengeFactory, ActivityFactory, UserFactory
 
 
@@ -126,3 +126,10 @@ class ActivityCostTest(unittest.TestCase):
         with self.assertRaises(ValidationError):
             validate_cost(Activity.TASK_SERVICE)
 
+
+class LogoPathTest(unittest.TestCase):
+    def test_path(self):
+        instance = ChallengeFactory.build(slug='test')
+        self.assertEqual(
+            'logo/test/logo.png',
+            logo_path(instance, 'logo.png'))

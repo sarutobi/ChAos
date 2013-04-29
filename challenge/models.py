@@ -133,7 +133,8 @@ class Activity(models.Model):
     # Hardly predefined reward cost type
     reward_cost_type = models.IntegerField(choices=REWARD_COST_TYPE)
     # Next two fields will be set automatically
-    creator = models.ForeignKey(User, verbose_name=_('creator'))
+    creator = models.ForeignKey(
+        User, editable=False, verbose_name=_('creator'))
     created_at = models.DateTimeField(auto_now_add=True, editable=False,
                                       verbose_name=_("created at"))
 

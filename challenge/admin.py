@@ -24,6 +24,7 @@ class ActivityAdmin(admin.ModelAdmin):
         'creator', 'created_at',
         'reward_cost_type', 'reward_cost', 'reward')
     form = ActivityForm
+    list_filter = ('challenge', )
 
     def save_model(self, request, obj, form, change):
         if not change:

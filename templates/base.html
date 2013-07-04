@@ -31,6 +31,7 @@
     <script src="{{STATIC_URL}}javascript/vendor/modernizr-2.6.1.min.js"></script>
 </head>
 <body>
+    <div id='main'>
     <div id='header'>
         <div>
             {% if not user.is_authenticated %}
@@ -55,7 +56,7 @@
         {% block footer %}{%endblock%}
         &copy; Valery A. Ilychev 2013. All rights reserved
     </div>
-
+    </div>
     <!-- JavaScript at the bottom for fast page loading: http://developer.yahoo.com/performance/rules.html#js_bottom -->
 
     <script src="{{STATIC_URL}}javascript/vendor/jquery-1.8.0.min.js"></script>

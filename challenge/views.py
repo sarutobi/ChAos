@@ -4,6 +4,8 @@ import logging
 
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
@@ -19,6 +21,12 @@ logger = logging.getLogger(__name__)
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+
+def index(request):
+    return render_to_response(
+        'index.html',
+        context_instance=RequestContext(request))
 
 
 class ChallengeList(ListView):

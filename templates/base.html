@@ -33,21 +33,18 @@
 <body>
     <div id='header'>
         <div>
-        {% if not user.is_authenticated %}
-        <a href='/account/login' class='btn'>Вход</a> | <a href='/account/create'>Регистрация</a>
-        {% else %}
-        Вошел как 
-        <a href='/profile' class='btn btn-mini'>{{user.get_full_name|default:user}}</a>
-        <a href="/logout" class='btn btn-mini'>Выход</a>
-        {%endif%}
+            {% if not user.is_authenticated %}
+            <a href='/account/login' class='btn'>Вход</a> | <a href='/account/create' class='btn'>Регистрация</a>
+            {% else %}
+            Вошел как 
+            <a href='/profile' class='btn btn-mini'>{{user.get_full_name|default:user}}</a>
+            <a href="/logout" class='btn btn-mini'>Выход</a>
+            {%endif%}
         </div>
         <h1>ChAos</h1>
         {% block header %}{% endblock %}
         <div id='breadcrumb'>{% block breadcrumb %}{%endblock%}</div>
-        <div id='mainmenu'>
-            {%block mainmenu%}
-            {%endblock%}
-        </div>
+        <div id='mainmenu'> {%block mainmenu%} {%endblock%} </div>
     </div>
 
     <div id='content' class='main'>

@@ -47,13 +47,13 @@
         <div id='mainmenu'> {%block mainmenu%} {%endblock%} </div>
     </div>
 
-    <div id='content' class='main'>
+    <div id='grid'>
         {% block content %}{% endblock %}
     </div>
-    <div class='clear'></div>
+    <div class='clearfix'></div>
     <div id='footer'>
-    {% block footer %}{%endblock%}
-    &copy; Valery A. Ilychev 2013. All rights reserved
+        {% block footer %}{%endblock%}
+        &copy; Valery A. Ilychev 2013. All rights reserved
     </div>
 
     <!-- JavaScript at the bottom for fast page loading: http://developer.yahoo.com/performance/rules.html#js_bottom -->

@@ -17,5 +17,5 @@ class test_login(WebTest):
         form = self.app.get('/accounts/login/').form
         form['username'] = self.user.email
         form['password'] = '123'
-        res = form.submit()
-        self.assertEqual(302, res.status_code)
+        res = form.submit().follow()
+        self.assertEqual(200, res.status_code)

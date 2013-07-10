@@ -14,5 +14,6 @@ urlpatterns = patterns(
     url('^accounts/login/$',
         'django.contrib.auth.views.login',
         {'template_name': 'login_form.html', }),
+    url(r'^accounts/profile/$', 'challenge.views.index'),
     url('^challenge/', include('challenge.urls'))
 )

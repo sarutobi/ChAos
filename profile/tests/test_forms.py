@@ -13,6 +13,8 @@ class TestSignUpForm(unittest.TestCase):
             'password1': 'test',
             'password2': 'test',
             'username': 'dummyuser',
+            'first_name': 'First name',
+            'last_name': 'Last name',
         }
 
     def tearDown(self):

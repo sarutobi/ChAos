@@ -11,6 +11,8 @@ from profile.models import Profile
 
 class SignUpForm(UserCreationForm):
     """ Require email address when a user signs up """
+    first_name = forms.CharField(max_length=30, label=_('First name'))
+    last_name = forms.CharField(max_length=30, label=_('Last name'))
     email = forms.EmailField(label=_('email address'), max_length=75)
 
     class Meta:

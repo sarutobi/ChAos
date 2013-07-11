@@ -77,3 +77,17 @@ def activate_user(user, code):
         user.save()
         return True
     return False
+
+
+def create_new_user(username, password, first_name, last_name, email):
+    user = User(
+        username=username,
+        first_name=first_name,
+        last_name=last_name,
+        email=email,
+        is_staff=False,
+        is_active=True,
+    )
+    user.set_password(password)
+    user.save()
+    return user

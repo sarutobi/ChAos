@@ -16,6 +16,8 @@ class EmailBackendTest(unittest.TestCase):
             'password1': 'test',
             'password2': 'test',
             'username': 'dummyuser',
+            'first_name': 'First name',
+            'last_name': 'Last name',
         }
         form = SignUpForm(data)
         form.is_valid()

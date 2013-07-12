@@ -13,7 +13,7 @@ from django.views.generic.list import ListView
 from ChAos.braces.views import LoginRequiredMixin
 
 from .models import Challenge, Activity
-from .forms import ChallengeForm
+from .forms import ChallengeForm, ActivityForm
 
 logger = logging.getLogger(__name__)
 
@@ -62,3 +62,18 @@ class ActivityView(DetailView):
     model = Activity
     template = "activity_detail.html"
     context_object_name = "activity"
+
+
+class CreateActivity(LoginRequiredMixin, CreateView):
+    model = Activity
+    form_class = ActivityForm
+    template_name = 'challenge_form.html'
+    success_url = '/challenge/'
+
+    def get(self, request, *args, **kwargs):
+        self.initial['challenge'] = Challenge.objects.get(slug=kwargs['slug'])
+        return super(CreateActivity, self).get(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.creator = self.request.user
+        return super(CreateActivity, self).form_valid(form)

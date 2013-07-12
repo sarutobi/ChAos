@@ -4,7 +4,7 @@ from django.conf.urls import patterns, include, url
 
 from .views import (
     ChallengeList, ChallengeView, ChallengeCreation, ChallengeEdit,
-    ActivityView
+    ActivityView, CreateActivity
 )
 
 urlpatterns = patterns(
@@ -15,4 +15,6 @@ urlpatterns = patterns(
         name="challenge_view"),
     url(r'^activity/(?P<id>\d+$)', ActivityView.as_view(),
         name="activity_view"),
+    url(r'^appendactivity/(?P<slug>[\w_-]+$)', CreateActivity.as_view(),
+        name='appendactivity_view'),
 )

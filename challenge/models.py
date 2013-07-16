@@ -53,7 +53,8 @@ class Challenge(models.Model):
     users = models.ManyToManyField(
         User,
         verbose_name=_('competitors'),
-        related_name='competitors')
+        related_name='competitors',
+        blank=True)
 
     def __unicode__(self):
         return self.title

@@ -13,6 +13,8 @@ urlpatterns = patterns(
     url(r'^create$', ChallengeCreation.as_view(), name='challenge_create'),
     url(r'^view/(?P<slug>[\w_-]+$)', ChallengeView.as_view(),
         name="challenge_view"),
+    url(r'^join/(?P<slug>[\w_-]+$)', 'challenge.views.join_to_challenge',
+        name='join_to_challenge'),
     url(r'^activity/(?P<id>\d+$)', ActivityView.as_view(),
         name="activity_view"),
     url(r'^appendactivity/(?P<slug>[\w_-]+$)', CreateActivity.as_view(),

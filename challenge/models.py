@@ -50,6 +50,10 @@ class Challenge(models.Model):
     # Challenge creator
     creator = models.ForeignKey(User, editable=False,
                                 verbose_name=_('creator'))
+    users = models.ManyToManyField(
+        User,
+        verbose_name=_('competitors'),
+        related_name='competitors')
 
     def __unicode__(self):
         return self.title

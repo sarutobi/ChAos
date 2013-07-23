@@ -95,6 +95,11 @@ class Challenge(models.Model):
         activity.challenge = self
         activity.save()
 
+    def join(self, user):
+        '''User join to challenge'''
+        if user.is_authenticated():
+            self.users.add(user)
+
 
 class Activity(models.Model):
     '''

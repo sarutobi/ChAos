@@ -4,6 +4,7 @@ import unittest
 from datetime import datetime
 
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import AnonymousUser
 
 from challenge.models import Activity, validate_cost, logo_path
 from .factories import ChallengeFactory, ActivityFactory, UserFactory
@@ -163,3 +164,34 @@ class LogoPathTest(unittest.TestCase):
         self.assertEqual(
             'logo/test/logo.png',
             logo_path(instance, 'logo.png'))
+
+
+class UserJoinChallengeTest(unittest.TestCase):
+    def setUp(self):
+        self.registered_user = UserFactory()
+        self.unregistered_user = AnonymousUser()
+        self.challenge = ChallengeFactory()
+
+    def tearDown(self):
+        self.registered_user.delete()
+        self.challenge.delete()
+        self.registered_user = None
+        self.unregistered_user = None
+        self.challenge = None
+
+    def test_join_anonymous(self):
+        before = self.challenge.users.count()
+        self.challenge.join(self.unregistered_user)
+        self.assertEqual(before, self.challenge.users.count())
+
+    def test_join_user(self):
+        before = self.challenge.users.count()
+        self.challenge.join(self.registered_user)
+        self.assertEqual(before + 1, self.challenge.users.count())
+
+    def test_double_join(self):
+        self.challenge.join(self.registered_user)
+        before = self.challenge.users.count()
+        self.challenge.join(self.registered_user)
+        self.assertEqual(before, self.challenge.users.count())
+

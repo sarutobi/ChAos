@@ -85,3 +85,38 @@ class TestCreateChallenge(WebTest):
         resp = form.submit(user=self.user.email)
         self.assertEqual(302, resp.status_code)
         self.assertEqual(Challenge.objects.count(), before + 1)
+
+
+class TestUserJoinChallenge(WebTest):
+    def setUp(self):
+        self.user = UserFactory()
+        self.first_challenge = ChallengeFactory()
+        self.second_challenge = ChallengeFactory()
+
+    def tearDown(self):
+        self.first_challenge.delete()
+        self.second_challenge.delete()
+        self.user.delete()
+        self.first_challenge = None
+        self.second_challenge = None
+        self.user = None
+
+    def test_join_possibility(self):
+        page = self.app.get('/challenge/view/%s' % self.first_challenge.slug)
+        expect = "/challenge/join/%s" % self.first_challenge.slug
+        assert expect in page.text
+
+    def test_join_unregistered(self):
+        before = self.first_challenge.users.count()
+        page = self.app.get('/challenge/join/%s' % self.first_challenge.slug)
+        self.assertEqual(302, page.status_code)
+        self.assertEqual(before, self.first_challenge.users.count())
+
+    def test_join_registered(self):
+        before = self.first_challenge.users.count()
+        page = self.app.get(
+            '/challenge/join/%s' % self.first_challenge.slug, user=self.user)
+        self.assertEqual(302, page.status_code)
+        self.assertEqual(before + 1, self.first_challenge.users.count())
+
+

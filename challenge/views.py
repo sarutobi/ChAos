@@ -77,3 +77,10 @@ class CreateActivity(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.creator = self.request.user
         return super(CreateActivity, self).form_valid(form)
+
+
+def join_to_challenge(request, slug):
+    ''' Joins current user to selected challenge'''
+    challenge = Challenge.objects.get(slug=slug)
+    challenge.join(request.user)
+    return HttpResponseRedirect('/')
